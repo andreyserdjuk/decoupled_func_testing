@@ -1,0 +1,26 @@
+{
+  "name": "andreyserdjuk/decoupled_func_testing",
+  "authors": [
+    {
+      "name": "andreyserdjuk",
+      "email": "ase6120@gmail.com"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "^5.7",
+    "symfony/framework-bundle": "^3.2",
+    "doctrine/doctrine-bundle": "^1.6",
+    "doctrine/orm": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "AndreySerdjuk\\DecoupledFuncTesting\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}

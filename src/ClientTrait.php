@@ -3,12 +3,8 @@
 namespace AndreySerdjuk\DecoupledFuncTesting;
 
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * {@inheritDoc}
- */
-class ExampleTestCase extends WebTestCase
+trait ClientTrait
 {
     /**
      * @var Client
@@ -16,17 +12,9 @@ class ExampleTestCase extends WebTestCase
     private static $clientInstance;
 
     /**
-     * @var DbIsolationHandler
+     * @var Client
      */
-    private static $dbIsolationHandler;
-
-    public function setUp()
-    {
-        $this->initClient();
-
-        self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
-        self::$dbIsolationHandler->setUp(self::class, self::$clientInstance->getContainer()->get('doctrine'));
-    }
+    protected $client;
 
     /**
      * Creates a Client.
@@ -47,4 +35,31 @@ class ExampleTestCase extends WebTestCase
 
         return $this->client = self::$clientInstance;
     }
+
+    /**
+     * Reset client and rollback transaction
+     */
+    protected static function resetClient()
+    {
+        if (self::$clientInstance) {
+            self::$clientInstance = null;
+        }
+
+        static::ensureKernelShutdown();
+    }
+
+    /**
+     * Creates a Client.
+     *
+     * @param array $options An array of options to pass to the createKernel class
+     * @param array $server  An array of server parameters
+     *
+     * @return Client A Client instance
+     */
+    abstract protected static function createClient(array $options = array(), array $server = array());
+
+    /**
+     * Shuts the kernel down if it was used in the test.
+     */
+    abstract protected static function ensureKernelShutdown();
 }
