@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: andreyserdjuk
- * Date: 3/28/17
- * Time: 12:58 AM
- */
 
 namespace Tests\AndreySerdjuk\app;
 
