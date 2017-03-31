@@ -27,6 +27,7 @@ class DbIsolatedTestCase extends WebTestCase
     protected function tearDown()
     {
         self::$dbIsolationHandler->tearDown($this);
+        parent::tearDown();
     }
 
     /**
