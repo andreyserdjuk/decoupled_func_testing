@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * {@inheritDoc}
  */
-class DbIsolatedTestCase extends WebTestCase
+abstract class DbIsolatedTestCase extends WebTestCase
 {
     use ClientTrait;
 
@@ -18,7 +18,7 @@ class DbIsolatedTestCase extends WebTestCase
 
     protected function setUp()
     {
-        $client = $this->initClient();
+        $client = $this->initClient(...$this->getClientArgs());
 
         self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
         self::$dbIsolationHandler->setUp(self::class, $client->getContainer()->get('doctrine'));
@@ -49,4 +49,6 @@ class DbIsolatedTestCase extends WebTestCase
     {
         self::$dbIsolationHandler->tearDownAfterClass($this);
     }
+
+    abstract protected function getClientArgs();
 }

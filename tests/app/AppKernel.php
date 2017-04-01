@@ -10,7 +10,18 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
+    /**
+     * Directory name, when bundles.php placed in ./ directory.
+     *
+     * @var string
+     */
     private $testCase;
+
+    /**
+     * Path to config.yml placed in self::$testCase directory.
+     *
+     * @var string
+     */
     private $rootConfig;
 
     public function __construct($testCase, $rootConfig, $environment, $debug)
