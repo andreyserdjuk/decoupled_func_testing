@@ -10,15 +10,11 @@ services:
 
 env:
   - DB=mysql
-  - DB_USER
-  - DB_HOST
-  - DB_PORT
-  - DB_NAME
-  - DB_USER
-  - DB_PASSWORD
 
 before_script:
+  - composer self-update
   - composer install
 
 script:
   - DB_USER=travis DB_PORT=3306 DB_HOST=127.0.0.1
+  - ./vendor/bin/phpunit -v -c tests/travis/$DB.travis.xml
