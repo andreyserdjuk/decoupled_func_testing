@@ -56,10 +56,10 @@ trait ClientTrait
      *
      * @return Client A Client instance
      */
-    abstract protected static function createClient(array $options = array(), array $server = array());
+    abstract protected function createClient(array $options = array(), array $server = array());
 
     /**
      * Shuts the kernel down if it was used in the test.
      */
-    abstract protected static function ensureKernelShutdown();
+    abstract protected function ensureKernelShutdown();
 }
