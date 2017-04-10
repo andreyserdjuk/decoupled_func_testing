@@ -60,8 +60,10 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
     protected function getClientArgs()
     {
         return [
-            'test_case' => 'DbIsolation',
-            'root_config' => 'config.yml',
+            [
+                'test_case' => 'DbIsolation',
+                'root_config' => 'config.yml',
+            ],
         ];
     }
 
