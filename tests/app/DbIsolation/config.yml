@@ -1,3 +1,2 @@
 imports:
-  - { resource: ../config/parameters.yml }
   - { resource: ../config/doctrine.yml }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Tests;
+namespace AndreySerdjuk\DecoupledFuncTesting;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
