@@ -8,6 +8,7 @@ use AndreySerdjuk\DecoupledFuncTesting\DbIsolation;
 use AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation;
 use AndreySerdjuk\DecoupledFuncTesting\DbIsolationHandler;
 use AndreySerdjuk\DecoupledFuncTesting\DbUtil;
+use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -54,7 +55,10 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
      */
     public function testRealTransaction()
     {
+        /** @var Connection $conn */
         $conn = $this->client->getContainer()->get('doctrine')->getConnection();
+
+        $conn->getParams();
     }
 
     protected function getClientArgs()
