@@ -5,6 +5,9 @@ namespace AndreySerdjuk\DecoupledFuncTesting;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
+/**
+ * Copy from doctrine project (because this class ignored by their composer settings)
+ */
 class DbUtil
 {
     /**

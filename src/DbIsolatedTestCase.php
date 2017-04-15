@@ -18,13 +18,26 @@ abstract class DbIsolatedTestCase extends WebTestCase
 
     protected function setUp()
     {
-        $client = $this->initClient(...$this->getClientArgs());
+        $this->initClient(...$this->getClientArgs());
+    }
 
+    /**
+     * @before
+     */
+    protected function beforeTest()
+    {
         self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
-        self::$dbIsolationHandler->setUp(self::class, $client->getContainer()->get('doctrine'));
+        self::$dbIsolationHandler->setUp(self::class, $this->client->getContainer()->get('doctrine'));
     }
 
     protected function tearDown()
+    {
+    }
+
+    /**
+     * @after
+     */
+    protected function afterTest()
     {
         self::$dbIsolationHandler->tearDown($this);
         parent::tearDown();

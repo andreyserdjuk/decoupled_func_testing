@@ -5,6 +5,7 @@ namespace Tests\AndreySerdjuk\app;
 require_once __DIR__ . '/bootstrap.php';
 
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -66,6 +67,15 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
+        $loader->load(function (ContainerBuilder $container) {
+            $container->setParameter('db_type', $GLOBALS['db_type']);
+            $container->setParameter('db_host', $GLOBALS['db_host']);
+            $container->setParameter('db_port', $GLOBALS['db_port']);
+            $container->setParameter('db_name', $GLOBALS['db_name']);
+            $container->setParameter('db_user', $GLOBALS['db_username']);
+            $container->setParameter('db_password', $GLOBALS['db_password']);
+        });
+
         $loader->load($this->rootConfig);
     }
 
