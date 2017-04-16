@@ -14,7 +14,7 @@ abstract class DbIsolatedTestCase extends WebTestCase
     /**
      * @var DbIsolationHandler
      */
-    private static $dbIsolationHandler;
+    protected static $dbIsolationHandler;
 
     protected function setUp()
     {
@@ -28,10 +28,12 @@ abstract class DbIsolatedTestCase extends WebTestCase
     {
         self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
         self::$dbIsolationHandler->setUp(self::class, $this->client->getContainer()->get('doctrine'));
+        $a=1;
     }
 
     protected function tearDown()
     {
+        $a=1;
     }
 
     /**
