@@ -48,7 +48,6 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
 
         $this->conn = self::$sharedConn;
 
-        $dbName = $this->client->getContainer()->getParameter('db_name');
         $schemaManager = $this->conn->getSchemaManager();
         $table = $schemaManager->createSchema()->createTable('test');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
