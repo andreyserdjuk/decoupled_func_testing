@@ -2,14 +2,9 @@
 
 namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
 
-use AndreySerdjuk\DecoupledFuncTesting\ClientTrait;
 use AndreySerdjuk\DecoupledFuncTesting\DbIsolatedTestCase;
-use AndreySerdjuk\DecoupledFuncTesting\DbIsolation;
-use AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation;
-use AndreySerdjuk\DecoupledFuncTesting\DbIsolationHandler;
 use AndreySerdjuk\DecoupledFuncTesting\DbUtil;
 use Doctrine\DBAL\Connection;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -64,9 +59,17 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
         /** @var Connection $conn */
         $conn = $this->client->getContainer()->get('doctrine')->getConnection();
 
-        $container = $this->client->getContainer();
+        $conn->insert('test', [
+            'id' => 1,
+            'name' => 'hi',
+        ]);
 
-        $conn->getParams();
+        $res = $conn->fetchAssoc('SELECT * FROM test');
+
+        $this->assertArrayHasKey('id', $res);
+        $this->assertArrayHasKey('name', $res);
+        $this->assertEquals(1, $res['id']);
+        $this->assertEquals('hi', $res['name']);
     }
 
     protected function getClientArgs()
