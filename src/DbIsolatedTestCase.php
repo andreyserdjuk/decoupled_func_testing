@@ -28,12 +28,13 @@ abstract class DbIsolatedTestCase extends WebTestCase
     {
         self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
         self::$dbIsolationHandler->setUp(self::class, $this->client->getContainer()->get('doctrine'));
-        $a=1;
     }
 
+    /**
+     * Disable kernel shutdown in \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase::tearDown()
+     */
     protected function tearDown()
     {
-        $a=1;
     }
 
     /**
@@ -42,7 +43,7 @@ abstract class DbIsolatedTestCase extends WebTestCase
     protected function afterTest()
     {
         self::$dbIsolationHandler->tearDown($this);
-        parent::tearDown();
+        static::ensureKernelShutdown();
     }
 
     /**

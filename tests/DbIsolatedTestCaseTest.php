@@ -87,11 +87,14 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
         }
     }
 
-    protected function tearDown()
+    /**
+     * @after
+     */
+    protected function afterTest()
     {
+        parent::afterTest();
+
         $fs = new Filesystem();
         $fs->remove($this->cacheDir);
-
-        parent::tearDown();
     }
 }
