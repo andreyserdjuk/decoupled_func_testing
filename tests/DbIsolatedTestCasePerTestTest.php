@@ -10,7 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @dbIsolationPerTest
  */
-class DbIsolatedTestCaseTest extends DbIsolatedTestCase
+class DbIsolatedTestCasePerTestTest extends DbIsolatedTestCase
 {
     use CustomKernelTrait;
 
