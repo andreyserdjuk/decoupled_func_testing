@@ -95,9 +95,17 @@ class DbIsolatedTestCaseTest extends DbIsolatedTestCase
      */
     protected function afterTest()
     {
-        parent::afterTest();
+        self::$dbIsolationHandler->tearDown($this);
+
+        /** @var Connection $conn */
+        $conn = $this->client->getContainer()->get('doctrine')->getConnection();
+        $res = $conn->fetchAssoc('SELECT * FROM test');
+
+        static::ensureKernelShutdown();
 
         $fs = new Filesystem();
         $fs->remove($this->cacheDir);
+
+        $this->assertEmpty($res);
     }
 }

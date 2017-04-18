@@ -27,7 +27,7 @@ abstract class DbIsolatedTestCase extends WebTestCase
     protected function beforeTest()
     {
         self::$dbIsolationHandler = new DbIsolationHandler(new DbIsolation(), new DbIsolationAnnotation());
-        self::$dbIsolationHandler->setUp(self::class, $this->client->getContainer()->get('doctrine'));
+        self::$dbIsolationHandler->setUp(static::class, $this->client->getContainer()->get('doctrine'));
     }
 
     /**
