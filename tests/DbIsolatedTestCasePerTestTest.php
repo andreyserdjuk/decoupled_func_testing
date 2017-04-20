@@ -52,7 +52,7 @@ class DbIsolatedTestCasePerTestTest extends DbIsolatedTestCase
     }
 
     /**
-     * Make sure that transaction was really started in setUp().
+     * Make sure that transaction was really started in setUp() before each test.
      */
     public function testRealTransaction()
     {
