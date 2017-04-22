@@ -11,16 +11,21 @@ services:
 env:
   - DB=mysql
 
-
 matrix:
   fast_finish: true
   include:
     - php: 5.6
-      env: SYMFONY_VERSION=2.8.*
+      env:
+        - SYMFONY_VERSION=2.8.*
+        - DB=mysql
     - php: 5.6
-      env: SYMFONY_VERSION=3.2.*
+      env:
+        - SYMFONY_VERSION=3.2.*
+        - DB=mysql
     - php: 7.1
-      env: SYMFONY_VERSION=3.2.*
+      env:
+        - SYMFONY_VERSION=3.2.*
+        - DB=mysql
 
 before_install:
   - '[[ "$TRAVIS_PHP_VERSION" != hhvm* ]] && (php --ini | grep xdebug) && phpenv config-rm xdebug.ini || true'
