@@ -1,15 +1,8 @@
 sudo: false
 language: php
 
-php:
-  - 5.6
-  - 7.1
-
 services:
   - mysql
-
-env:
-  - DB=mysql
 
 matrix:
   fast_finish: true
