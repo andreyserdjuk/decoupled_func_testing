@@ -2,6 +2,9 @@
 
 namespace AndreySerdjuk\DecoupledFuncTesting;
 
+/**
+ * Searches @dbIsolation, @dbIsolationPerTest and @nestTransactionsWithSavepoints annotations.
+ */
 class DbIsolationAnnotation
 {
     /**
