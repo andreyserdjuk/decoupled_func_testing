@@ -4,61 +4,52 @@ namespace AndreySerdjuk\DecoupledFuncTesting;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * Starts and rollbacks transactions in all connections if class has @dbIsolation annotation.
+ */
 class DbIsolationHandler
 {
     /**
      * @var DbIsolation
      */
-    protected $dbIsolation;
+    protected static $dbIsolation;
 
     /**
      * @var DbIsolationAnnotation
      */
-    protected $dbIsolationAnnotation;
+    protected static $isolationConfig;
 
     /**
-     * @param DbIsolation $dbIsolation
-     * @param DbIsolationAnnotation $dbIsolationAnnotation
+     * @param DbIsolation           $dbIsolation
+     * @param DbIsolationAnnotation $isolationConfig
      */
-    public function __construct(DbIsolation $dbIsolation, DbIsolationAnnotation $dbIsolationAnnotation)
+    public function __construct(DbIsolation $dbIsolation, DbIsolationAnnotation $isolationConfig)
     {
-        $this->dbIsolation = $dbIsolation;
-        $this->dbIsolationAnnotation = $dbIsolationAnnotation;
+        self::$dbIsolation = $dbIsolation;
+        self::$isolationConfig = $isolationConfig;
     }
 
-    public function setUp($class, RegistryInterface $managerRegistry)
+    /**
+     * @param string|object     $class
+     * @param RegistryInterface $managerRegistry
+     */
+    public function beforeTest($class, RegistryInterface $managerRegistry)
     {
-        if ($this->dbIsolationAnnotation->getDbIsolationPerTestSetting($class)) {
-            $this->startTransaction($class, $managerRegistry);
+        if (self::$isolationConfig->hasDbIsolationSetting($class)) {
+            self::$dbIsolation->startTransaction(
+                $managerRegistry,
+                self::$isolationConfig->hasNestTransactionsWithSavepoints($class)
+            );
         }
     }
 
-    public function tearDown($class)
+    /**
+     * @param string|object $class
+     */
+    public function afterTest($class)
     {
-        if ($this->dbIsolationAnnotation->getDbIsolationPerTestSetting($class)) {
-            $this->dbIsolation->rollbackTransaction();
+        if (self::$isolationConfig->hasDbIsolationSetting($class)) {
+            self::$dbIsolation->rollbackTransaction();
         }
-    }
-
-    public function setUpBeforeClass($class, RegistryInterface $managerRegistry)
-    {
-        if ($this->dbIsolationAnnotation->getDbIsolationClassSetting($class)) {
-            $this->startTransaction($class, $managerRegistry);
-        }
-    }
-
-    public function tearDownAfterClass($class)
-    {
-        if ($this->dbIsolationAnnotation->getDbIsolationClassSetting($class)) {
-            $this->dbIsolation->rollbackTransaction();
-        }
-    }
-
-    private function startTransaction($class, $managerRegistry)
-    {
-        $this->dbIsolation->startTransaction(
-            $managerRegistry,
-            $this->dbIsolationAnnotation->hasNestTransactionsWithSavepoints($class)
-        );
     }
 }

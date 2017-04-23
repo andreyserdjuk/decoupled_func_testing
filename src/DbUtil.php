@@ -125,7 +125,7 @@ class DbUtil
     {
         $params = [
             'driver' => 'pdo_sqlite',
-            'memory' => true
+            'memory' => true,
         ];
 
         if (isset($GLOBALS['db_path'])) {

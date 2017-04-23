@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation
- * @dbIsolationPerTest
  * @dbIsolation
  * @nestTransactionsWithSavepoints
  */
@@ -16,29 +15,20 @@ class DbIsolationAnnotationTest extends TestCase
     /**
      * @var DbIsolationAnnotation
      */
-    protected static $dbIsolationAnnotation;
+    protected static $isolationConfig;
 
     protected function setUp()
     {
-        self::$dbIsolationAnnotation = new DbIsolationAnnotation();
+        self::$isolationConfig = new DbIsolationAnnotation();
     }
 
     /**
-     * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation::getDbIsolationPerTestSetting()
+     * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation::hasDbIsolationSetting()
      */
-    public function testHasDbIsolationPerTestSetting()
+    public function testHasDbIsolationSetting()
     {
-        $this->assertTrue(self::$dbIsolationAnnotation->getDbIsolationPerTestSetting($this));
-        $this->assertFalse(self::$dbIsolationAnnotation->getDbIsolationPerTestSetting(new \stdClass()));
-    }
-
-    /**
-     * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation::getDbIsolationPerClassSetting()
-     */
-    public function testHasDbIsolationPerClassSetting()
-    {
-        $this->assertTrue(self::$dbIsolationAnnotation->getDbIsolationClassSetting($this));
-        $this->assertFalse(self::$dbIsolationAnnotation->getDbIsolationClassSetting(new \stdClass()));
+        $this->assertTrue(self::$isolationConfig->hasDbIsolationSetting($this));
+        $this->assertFalse(self::$isolationConfig->hasDbIsolationSetting(new \stdClass()));
     }
 
     /**
@@ -46,7 +36,7 @@ class DbIsolationAnnotationTest extends TestCase
      */
     public function testHasNestTransactionsWithSavepoints()
     {
-        $this->assertTrue(self::$dbIsolationAnnotation->hasNestTransactionsWithSavepoints($this));
-        $this->assertFalse(self::$dbIsolationAnnotation->hasNestTransactionsWithSavepoints(new \stdClass()));
+        $this->assertTrue(self::$isolationConfig->hasNestTransactionsWithSavepoints($this));
+        $this->assertFalse(self::$isolationConfig->hasNestTransactionsWithSavepoints(new \stdClass()));
     }
 }

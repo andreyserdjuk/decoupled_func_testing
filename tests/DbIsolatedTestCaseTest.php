@@ -2,15 +2,15 @@
 
 namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
 
-use AndreySerdjuk\DecoupledFuncTesting\DbIsolatedTestCase;
+use AndreySerdjuk\DecoupledFuncTesting\AbstractDbIsolatedTestCase;
 use AndreySerdjuk\DecoupledFuncTesting\DbUtil;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @dbIsolationPerTest
+ * @dbIsolation
  */
-class DbIsolatedTestCasePerTestTest extends DbIsolatedTestCase
+class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
 {
     use CustomKernelTrait;
 
@@ -95,7 +95,7 @@ class DbIsolatedTestCasePerTestTest extends DbIsolatedTestCase
      */
     protected function afterTest()
     {
-        self::$dbIsolationHandler->tearDown($this);
+        self::$dbIsolationHandler->afterTest($this);
 
         /** @var Connection $conn */
         $conn = $this->client->getContainer()->get('doctrine')->getConnection();
@@ -103,8 +103,7 @@ class DbIsolatedTestCasePerTestTest extends DbIsolatedTestCase
 
         static::ensureKernelShutdown();
 
-        $fs = new Filesystem();
-        $fs->remove($this->cacheDir);
+        (new Filesystem())->remove($this->cacheDir);
 
         $this->assertEmpty($res);
     }

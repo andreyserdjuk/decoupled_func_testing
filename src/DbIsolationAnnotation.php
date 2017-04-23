@@ -3,14 +3,19 @@
 namespace AndreySerdjuk\DecoupledFuncTesting;
 
 /**
- * Searches @dbIsolation, @dbIsolationPerTest and @nestTransactionsWithSavepoints annotations.
+ * Searches @dbIsolationPerTest and @nestTransactionsWithSavepoints annotations.
  */
 class DbIsolationAnnotation
 {
+    use AnnotationReaderTrait;
+
+    const DB_ISOLATION = 'dbIsolation';
+
     /**
-     * @var bool[]
+     * Use to avoid transaction rollbacks with Connection::transactional and missing on conflict in Doctrine
+     * SQLSTATE[25P02] current transaction is aborted, commands ignored until end of transaction block
      */
-    private static $dbIsolation;
+    const NEST_TRANSACTIONS_WITH_SAVEPOINTS = 'nestTransactionsWithSavepoints';
 
     /**
      * @var bool[]
@@ -23,26 +28,11 @@ class DbIsolationAnnotation
     private static $nestTransactionsWithSavepoints = [];
 
     /**
-     * Get value of dbIsolation option from annotation of called class
-     * @param string|object $class
-     * @return bool
-     */
-    public function getDbIsolationClassSetting($class)
-    {
-        $fqcn = self::getFqcn($class);
-        if (!isset(self::$dbIsolation[$fqcn])) {
-            self::$dbIsolation[$fqcn] = self::hasClassAnnotation($fqcn, static::getDbIsolationAnnotationName());
-        }
-
-        return self::$dbIsolation[$fqcn];
-    }
-
-    /**
      * Get value of dbIsolationPerTest option from annotation of called class
      * @param string|object $class
      * @return bool
      */
-    public function getDbIsolationPerTestSetting($class)
+    public function hasDbIsolationSetting($class)
     {
         $fqcn = self::getFqcn($class);
         if (!isset(self::$dbIsolationPerTest[$fqcn])) {
@@ -56,6 +46,7 @@ class DbIsolationAnnotation
     }
 
     /**
+     * @param string|object $class
      * @return bool
      */
     public function hasNestTransactionsWithSavepoints($class)
@@ -72,26 +63,15 @@ class DbIsolationAnnotation
     /**
      * @return string
      */
-    protected static function getDbIsolationAnnotationName()
-    {
-        return 'dbIsolation';
-    }
-
-    /**
-     * @return string
-     */
     protected static function getDbIsolationPerTestAnnotationName()
     {
-        return 'dbIsolationPerTest';
+        return static::DB_ISOLATION;
     }
 
-    /**
-     * Use to avoid transaction rollbacks with Connection::transactional and missing on conflict in Doctrine
-     * SQLSTATE[25P02] current transaction is aborted, commands ignored until end of transaction block
-     */
+
     protected static function getNestTransactionsWithSavepointsAnnotationName()
     {
-        return 'nestTransactionsWithSavepoints';
+        return static::NEST_TRANSACTIONS_WITH_SAVEPOINTS;
     }
 
     private static function getFqcn($class)
@@ -101,23 +81,9 @@ class DbIsolationAnnotation
         } elseif (is_string($class) && class_exists($class)) {
             $fqcn = $class;
         } else {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException(sprintf('Cannot load class: "%s"', $class));
         }
 
         return $fqcn;
-    }
-
-
-    /**
-     * @param string $className
-     * @param string $annotationName
-     *
-     * @return bool
-     */
-    private static function hasClassAnnotation($className, $annotationName)
-    {
-        $annotations = \PHPUnit_Util_Test::parseTestMethodAnnotations($className);
-
-        return isset($annotations['class'][$annotationName]);
     }
 }
