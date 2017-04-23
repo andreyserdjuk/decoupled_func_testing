@@ -28,9 +28,10 @@ before_script:
   - '[[ "$TRAVIS_PHP_VERSION" != hhvm* ]] && (php --ini | grep xdebug) && phpenv config-rm xdebug.ini || true'
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-source --no-interaction
+  - mkdir -p ./build/logs
 
 script:
-  - ./vendor/bin/phpunit -v -c tests/travis/$DB.travis.xml
+  - ./vendor/bin/phpunit -v -c tests/travis/$DB.travis.xml --coverage-clover ./build/logs/clover.xml
 
 after_success:
   - ./vendor/bin/test-reporter
