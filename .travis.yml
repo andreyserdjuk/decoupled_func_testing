@@ -4,6 +4,10 @@ language: php
 services:
   - mysql
 
+addons:
+  code_climate:
+    repo_token: a06ebc5fe1cb63a941c11fcd67bd2ad89c5547b7998d2667eaca65627e9af442
+
 matrix:
   fast_finish: true
   include:
@@ -22,9 +26,11 @@ matrix:
 
 before_script:
   - '[[ "$TRAVIS_PHP_VERSION" != hhvm* ]] && (php --ini | grep xdebug) && phpenv config-rm xdebug.ini || true'
-  - composer self-update
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-source --no-interaction
 
 script:
   - ./vendor/bin/phpunit -v -c tests/travis/$DB.travis.xml
+
+after_success:
+  - ./vendor/bin/test-reporter
