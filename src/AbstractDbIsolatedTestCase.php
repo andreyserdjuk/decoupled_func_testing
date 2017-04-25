@@ -30,19 +30,11 @@ abstract class AbstractDbIsolatedTestCase extends WebTestCase
     }
 
     /**
-     * First call before test.
-     */
-    protected function setUp()
-    {
-        $this->initClient(...$this->getClientArgs());
-    }
-
-    /**
-     * Second call before test.
      * @before
      */
     protected function beforeTest()
     {
+        $this->initClient(...$this->getClientArgs());
         self::$dbIsolationHandler->beforeTest(static::class, $this->client->getContainer()->get('doctrine'));
     }
 

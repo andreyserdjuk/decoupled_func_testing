@@ -26,31 +26,6 @@ class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
      */
     protected $conn;
 
-    protected $cacheDir;
-
-    /**
-     * @return void
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->cacheDir = $this->client->getKernel()->getCacheDir();
-
-        if (!isset(self::$sharedConn)) {
-            self::$sharedConn = DbUtil::getConnection();
-        }
-
-        $this->conn = self::$sharedConn;
-
-        $schemaManager = $this->conn->getSchemaManager();
-        $table = $schemaManager->createSchema()->createTable('test');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
-        $table->setPrimaryKey(['id']);
-        $schemaManager->createTable($table);
-    }
-
     /**
      * Make sure that transaction was really started in setUp() before each test.
      */
@@ -70,6 +45,25 @@ class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
         $this->assertArrayHasKey('name', $res);
         $this->assertEquals(1, $res['id']);
         $this->assertEquals('hi', $res['name']);
+    }
+
+    /**
+     * @before
+     */
+    protected function initDb()
+    {
+        if (!isset(self::$sharedConn)) {
+            self::$sharedConn = DbUtil::getConnection();
+        }
+
+        $this->conn = self::$sharedConn;
+
+        $schemaManager = $this->conn->getSchemaManager();
+        $table = $schemaManager->createSchema()->createTable('test');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->setPrimaryKey(['id']);
+        $schemaManager->createTable($table);
     }
 
     protected function getClientArgs()
@@ -102,8 +96,7 @@ class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
         $res = $conn->fetchAssoc('SELECT * FROM test');
 
         static::ensureKernelShutdown();
-
-        (new Filesystem())->remove($this->cacheDir);
+        (new Filesystem())->remove($this->client->getKernel()->getCacheDir());
 
         $this->assertEmpty($res);
     }
