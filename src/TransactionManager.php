@@ -1,7 +1,8 @@
 <?php
 
-namespace AndreySerdjuk\DecoupledFuncTesting;
+namespace AndreySerdjuk\DbIsolation;
 
+use AndreySerdjuk\DbIsolation\TransactionHandlers\TransactionManagerInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -9,7 +10,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * Starts and rollbacks transactions in all connections.
  */
-class DbIsolation
+class TransactionManager implements TransactionManagerInterface
 {
     /**
      * @var Connection[]
@@ -21,19 +22,31 @@ class DbIsolation
      * @param RegistryInterface $registry
      * @param bool              $nestSavepoints nest transactions with savepoints
      */
-    public function startTransaction(RegistryInterface $registry, $nestSavepoints = false)
+    public function startTransactionByRegistry(RegistryInterface $registry, $nestSavepoints = false)
     {
-        foreach ($registry->getManagers() as $name => $em) {
+        foreach ($registry->getManagers() as $em) {
             if ($em instanceof EntityManagerInterface) {
                 $em->clear();
                 $connection = $em->getConnection();
-                if ($connection->getNestTransactionsWithSavepoints() !== $nestSavepoints) {
-                    $connection->setNestTransactionsWithSavepoints($nestSavepoints);
-                }
-                $connection->beginTransaction();
-
-                self::$connections[$name.uniqid('connection', true)] = $connection;
+                $this->startTransaction($connection, $nestSavepoints);
             }
+        }
+    }
+
+    /**
+     * Start transaction in each connection.
+     * @param Connection[] $connections
+     * @param bool         $nestSavepoints nest transactions with savepoints
+     */
+    public function startTransaction(array $connections, $nestSavepoints = false)
+    {
+        foreach ($connections as $connection) {
+            if ($connection->getNestTransactionsWithSavepoints() !== $nestSavepoints) {
+                $connection->setNestTransactionsWithSavepoints($nestSavepoints);
+            }
+            $connection->beginTransaction();
+
+            self::$connections[] = $connection;
         }
     }
 

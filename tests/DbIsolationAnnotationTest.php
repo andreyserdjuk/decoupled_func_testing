@@ -2,11 +2,10 @@
 
 namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
 
-use AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation
+ * @covers \AndreySerdjuk\DbIsolation\DbIsolationAnnotation
  * @dbIsolation
  * @nestTransactionsWithSavepoints
  */
@@ -23,7 +22,7 @@ class DbIsolationAnnotationTest extends TestCase
     }
 
     /**
-     * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation::hasDbIsolationSetting()
+     * @covers \AndreySerdjuk\DbIsolation\DbIsolationAnnotation::hasDbIsolationSetting()
      */
     public function testHasDbIsolationSetting()
     {
@@ -32,7 +31,7 @@ class DbIsolationAnnotationTest extends TestCase
     }
 
     /**
-     * @covers \AndreySerdjuk\DecoupledFuncTesting\DbIsolationAnnotation::hasNestTransactionsWithSavepoints()
+     * @covers \AndreySerdjuk\DbIsolation\DbIsolationAnnotation::hasNestTransactionsWithSavepoints()
      */
     public function testHasNestTransactionsWithSavepoints()
     {

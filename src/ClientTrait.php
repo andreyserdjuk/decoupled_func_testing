@@ -1,8 +1,9 @@
 <?php
 
-namespace AndreySerdjuk\DecoupledFuncTesting;
+namespace AndreySerdjuk\DbIsolation;
 
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait ClientTrait
 {
@@ -46,6 +47,29 @@ trait ClientTrait
         }
 
         static::ensureKernelShutdown();
+    }
+
+    /**
+     * Get an instance of the dependency injection container.
+     *
+     * @return ContainerInterface
+     */
+    protected static function getContainer()
+    {
+        return static::getClientInstance()->getContainer();
+    }
+
+    /**
+     * @return Client
+     * @throws \BadMethodCallException
+     */
+    protected static function getClientInstance()
+    {
+        if (!self::$clientInstance) {
+            throw new \BadMethodCallException('Client instance is not initialized.');
+        }
+
+        return self::$clientInstance;
     }
 
     /**

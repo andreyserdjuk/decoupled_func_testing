@@ -2,8 +2,8 @@
 
 namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
 
-use AndreySerdjuk\DecoupledFuncTesting\AbstractDbIsolatedTestCase;
-use AndreySerdjuk\DecoupledFuncTesting\DbUtil;
+use AndreySerdjuk\DbIsolation\AbstractDbIsolatedTestCase;
+use AndreySerdjuk\DbIsolation\DbUtil;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -89,7 +89,7 @@ class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
      */
     protected function afterTest()
     {
-        self::$dbIsolationHandler->afterTest($this);
+        self::$transactionHandler->afterDbChanges($this);
 
         /** @var Connection $conn */
         $conn = $this->client->getContainer()->get('doctrine')->getConnection();
