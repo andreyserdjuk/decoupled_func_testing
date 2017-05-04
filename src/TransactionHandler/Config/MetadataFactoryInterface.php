@@ -1,8 +1,8 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler\Config;
 
-use AndreySerdjuk\DbIsolation\TransactionHandlers\Annotation\ConfigurationInterface;
+use AndreySerdjuk\DbIsolation\TransactionHandler\Annotation\ConfigurationInterface;
 
 /**
  * Interface for all possible metadata factories - configuration providers.

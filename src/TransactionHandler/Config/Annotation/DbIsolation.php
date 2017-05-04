@@ -1,7 +1,8 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers\Annotation;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler\Config\Annotation;
 
+use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
@@ -16,16 +17,7 @@ class DbIsolation implements ConfigurationInterface
      *
      * @var bool
      */
-    private $nestedSavepoints;
-
-    /**
-     * Annotation constructor.
-     * @param bool $nestedSavepoints
-     */
-    public function __construct($nestedSavepoints)
-    {
-        $this->nestedSavepoints = $nestedSavepoints;
-    }
+    public $nestedSavepoints = false;
 
     /**
      * @return bool

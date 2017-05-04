@@ -20,12 +20,12 @@
   },
   "autoload": {
     "psr-4": {
-      "AndreySerdjuk\\DecoupledFuncTesting\\": "src/"
+      "AndreySerdjuk\\DbIsolation\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\AndreySerdjuk\\DecoupledFuncTesting\\": "tests/"
+      "Tests\\AndreySerdjuk\\DbIsolation\\": "tests/"
     }
   }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler\Config;
 
-use AndreySerdjuk\DbIsolation\TransactionHandlers\Annotation\DbIsolation;
+use AndreySerdjuk\DbIsolation\TransactionHandler\Config\Annotation\DbIsolation;
 use Doctrine\Common\Annotations\Reader;
 
 /**
@@ -25,7 +25,7 @@ class AnnotationMetadataFactory implements MetadataFactoryInterface
 
     /**
      * @param object|string $class
-     * @return null|object
+     * @return null|object|DbIsolation
      */
     public function getMetadata($class)
     {

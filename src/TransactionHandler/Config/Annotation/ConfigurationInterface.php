@@ -1,6 +1,6 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers\Annotation;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler\Config\Annotation;
 
 /**
  * Base DbIsolation configuration interface
