@@ -1,7 +1,8 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler;
 
+use AndreySerdjuk\DbIsolation\TransactionHandler\Config\MetadataFactoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

@@ -1,14 +1,15 @@
 <?php
 
-namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
+namespace Tests\AndreySerdjuk\DbIsolation;
 
 use AndreySerdjuk\DbIsolation\AbstractDbIsolatedTestCase;
 use AndreySerdjuk\DbIsolation\DbUtil;
+use AndreySerdjuk\DbIsolation\TransactionHandler\Config\Annotation\DbIsolation;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @dbIsolation
+ * @DbIsolation(nestedSavepoints=false)
  */
 class DbIsolatedTestCaseTest extends AbstractDbIsolatedTestCase
 {

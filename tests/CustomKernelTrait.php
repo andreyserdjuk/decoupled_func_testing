@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AndreySerdjuk\DecoupledFuncTesting;
+namespace Tests\AndreySerdjuk\DbIsolation;
 
 trait CustomKernelTrait
 {

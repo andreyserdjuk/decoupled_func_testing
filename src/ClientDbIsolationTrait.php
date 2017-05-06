@@ -2,9 +2,10 @@
 
 namespace AndreySerdjuk\DbIsolation;
 
-use AndreySerdjuk\DbIsolation\TransactionHandlers\AnnotationMetadataFactory;
-use AndreySerdjuk\DbIsolation\TransactionHandlers\TransactionHandler;
+use AndreySerdjuk\DbIsolation\TransactionHandler\Config\AnnotationMetadataFactory;
+use AndreySerdjuk\DbIsolation\TransactionHandler\TransactionHandler;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -43,6 +44,12 @@ trait ClientDbIsolationTrait
 
         /** @var RegistryInterface $registry */
         $registry = $container->get('doctrine');
+
+        foreach ($registry->getManagers() as $em) {
+            if ($em instanceof EntityManagerInterface) {
+                $em->clear();
+            }
+        }
 
         self::$transactionHandler->beforeDbChanges(static::class, $registry->getConnections());
     }

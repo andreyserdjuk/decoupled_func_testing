@@ -2,7 +2,7 @@
 
 namespace AndreySerdjuk\DbIsolation\TransactionHandler\Config;
 
-use AndreySerdjuk\DbIsolation\TransactionHandler\Annotation\ConfigurationInterface;
+use AndreySerdjuk\DbIsolation\TransactionHandler\Config\Annotation\ConfigurationInterface;
 
 /**
  * Interface for all possible metadata factories - configuration providers.

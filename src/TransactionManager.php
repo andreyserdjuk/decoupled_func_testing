@@ -2,10 +2,8 @@
 
 namespace AndreySerdjuk\DbIsolation;
 
-use AndreySerdjuk\DbIsolation\TransactionHandlers\TransactionManagerInterface;
+use AndreySerdjuk\DbIsolation\TransactionHandler\TransactionManagerInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Starts and rollbacks transactions in all connections.
@@ -16,22 +14,6 @@ class TransactionManager implements TransactionManagerInterface
      * @var Connection[]
      */
     protected static $connections = [];
-
-    /**
-     * Start transaction in each connection.
-     * @param RegistryInterface $registry
-     * @param bool              $nestSavepoints nest transactions with savepoints
-     */
-    public function startTransactionByRegistry(RegistryInterface $registry, $nestSavepoints = false)
-    {
-        foreach ($registry->getManagers() as $em) {
-            if ($em instanceof EntityManagerInterface) {
-                $em->clear();
-                $connection = $em->getConnection();
-                $this->startTransaction($connection, $nestSavepoints);
-            }
-        }
-    }
 
     /**
      * Start transaction in each connection.

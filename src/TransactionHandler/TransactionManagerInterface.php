@@ -1,6 +1,6 @@
 <?php
 
-namespace AndreySerdjuk\DbIsolation\TransactionHandlers;
+namespace AndreySerdjuk\DbIsolation\TransactionHandler;
 
 use Doctrine\DBAL\Connection;
 
