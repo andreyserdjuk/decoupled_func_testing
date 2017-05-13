@@ -69,7 +69,7 @@ trait ClientDbIsolationTrait
      */
     protected function afterTest()
     {
-        self::$transactionHandler->afterDbChanges($this);
+        self::$transactionHandler->afterDbChanges(static::class);
         static::ensureKernelShutdown();
     }
 
